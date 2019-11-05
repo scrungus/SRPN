@@ -1,0 +1,28 @@
+-single input > goes on stack. operation > tries to pop stack. if only one element> stack underflow. keeps element on
+stack. next time you do a number then operation, it uses the initial input. E.g.:
+10 
++ 
+Stack Underflow.
+10
++ 
+= 
+20
+
+- 'd' peeks the stack
+- '=' peeks last element
+
+- 'r' does the operation r+ where r is a 'random' number from a pre generated list https://stackoverflow.com/questions/8049556/what-s-the-difference-between-srand1-and-srand0
+
+- infix is parsed and added then treated like normal RPN
+- https://www.programiz.com/python-programming/precedence-associativity
+
+-  2+4/3*6 = 2+(4/3)*6` = (2+(4/3))*6 = 20
+-  2+2^2*2 = 2+(2^2)*2 = (2+(2^2))*2 = 12
+
+- precedence of operations (H to L) : %,^,/,*,+,-
+- if * and / and +/- are in one operation, it breaks this rule and does +- before *
+- 3+3/1*5 = 30 > (3+3/1)*5
+- 3+3*1/5 = 3 > 3+(3*1/5)
+
+- always rounds down
+
