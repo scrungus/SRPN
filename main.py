@@ -13,10 +13,15 @@ def printStack():
         print(m.trunc(stack[i]))
     return
 
+def findOffender(elem):
+    for i in range(len(elem)):
+        if not elem[i].isdigit():
+            return elem[i]
+
 def performOperation(elem):
-    validoperations = ['*','/','+','-','^','%','d','r','=']
     if not elem in validoperations:
-        print('unrecognised operator ',)
+        print('unrecognised operator',findOffender(elem))
+        
         try:
             return float(elem)
         except:
@@ -39,7 +44,11 @@ def performOperation(elem):
     if elem == '*':
         return checkSat(x*y)
     if elem == '/':
-        return checkSat(x/y)
+        try:
+            return checkSat(x/y)
+        except:
+            print('Divide by 0.')
+            return
     if elem == '+':
         return checkSat(x+y)
     if elem == '-':
@@ -54,13 +63,15 @@ def acceptInput():
         line = input('')
         for elem in line.split():
             try:
-                stack.append(checkSat(float(elem)))
+                stack.append(checkSat(int(elem)))
+                
             except:
                 newelem = performOperation(elem)
                 if newelem is not None:
                     stack.append(newelem)
     return
 
+validoperations = ['*','/','+','-','^','%','d','r','=']
 stack = []
 MAX = 2147483647
 print('You can now begin using the SRPN calculator:')
