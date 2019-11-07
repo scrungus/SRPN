@@ -25,4 +25,5 @@ Stack Underflow.
 - 3+3*1/5 = 3 > 3+(3*1/5)
 
 - always rounds down
+- 'unrecognized operand' still puts any numbers on the stack
 
