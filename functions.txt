@@ -27,4 +27,13 @@ Stack Underflow.
 - always rounds down
 - 'unrecognized operand' still puts any numbers on the stack
 - data stored as doubles
+- on one line - if no spaces, does infix. if spaces, does postfix
+11d1d1
+11
+11
+1
+d
+11
+1
+1
 

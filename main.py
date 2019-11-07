@@ -8,20 +8,26 @@ def printStack():
 def performOperation(elem):
     validoperations = ['*','/','+','-','^','%','d','r','=']
     if not elem in validoperations:
-        print('unrecognised operator ',elem)
+        print('unrecognised operator ',)
         try:
             return float(elem)
         except:
             return
-            
+
     if elem == 'd':
         printStack()
         return
     if elem == '=':
         print(m.trunc(stack[-1]))
         return
-    y = float(stack.pop())
-    x = float(stack.pop())
+    try:
+        y = float(stack.pop())
+        x = float(stack.pop())
+    except:
+        print('Stack Underflow')
+        stack.append(y)
+        return
+
     if elem == '*':
         return x*y
     if elem == '/':
