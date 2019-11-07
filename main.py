@@ -19,36 +19,37 @@ def findOffender(elem):
             return elem[i]
 
 def performOperation(elem):
+    #invalid operations
     if not elem in validoperations:
         print('unrecognised operator',findOffender(elem))
-        
+
         try:
             return float(elem)
         except:
             return
-
+    #read-only operations
     if elem == 'd':
         printStack()
         return
     if elem == '=':
         print(m.trunc(stack[-1]))
         return
-    try:
+    #write operations
+    if(len(stack)>=2):
         y = float(stack.pop())
         x = float(stack.pop())
-    except:
+    else:
         print('Stack Underflow')
-        stack.append(y)
         return
 
     if elem == '*':
         return checkSat(x*y)
     if elem == '/':
-        try:
-            return checkSat(x/y)
-        except:
-            print('Divide by 0.')
+        if y == 0:
+            print('divide by 0.')
             return
+        else:
+            return checkSat(x/y)
     if elem == '+':
         return checkSat(x+y)
     if elem == '-':
@@ -62,10 +63,10 @@ def acceptInput():
     while(1):
         line = input('')
         for elem in line.split():
-            try:
+            if(elem.lstrip('-').isdigit()):
                 stack.append(checkSat(int(elem)))
                 
-            except:
+            else:
                 newelem = performOperation(elem)
                 if newelem is not None:
                     stack.append(newelem)
