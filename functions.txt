@@ -26,4 +26,5 @@ Stack Underflow.
 
 - always rounds down
 - 'unrecognized operand' still puts any numbers on the stack
+- data stored as doubles
 
