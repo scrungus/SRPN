@@ -8,6 +8,8 @@ Stack Underflow.
 = 
 20
 
+MAX : 2147483647
+MIN : -2147483647
 - 'd' peeks the stack
 - '=' peeks last element
 

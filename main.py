@@ -1,8 +1,16 @@
 import math as m
 
+def checkSat(elem):
+    if elem > MAX:
+        return MAX
+    elif elem < -MAX:
+        return -MAX
+    else:
+        return elem
+
 def printStack():
     for i in range(len(stack)):
-        print(stack[i])
+        print(m.trunc(stack[i]))
     return
 
 def performOperation(elem):
@@ -29,30 +37,31 @@ def performOperation(elem):
         return
 
     if elem == '*':
-        return x*y
+        return checkSat(x*y)
     if elem == '/':
-        return x/y
+        return checkSat(x/y)
     if elem == '+':
-        return x+y
+        return checkSat(x+y)
     if elem == '-':
-        return x-y
+        return checkSat(x-y)
     if elem == '%':
-        return x%y
+        return checkSat(x%y)
     if elem == '^':
-        return x^y
+        return checkSat(x^y)
 
 def acceptInput():
     while(1):
         line = input('')
         for elem in line.split():
-            if elem.isdigit() :
-                stack.append(elem)
-            else:
+            try:
+                stack.append(checkSat(float(elem)))
+            except:
                 newelem = performOperation(elem)
                 if newelem is not None:
                     stack.append(newelem)
     return
 
 stack = []
+MAX = 2147483647
 print('You can now begin using the SRPN calculator:')
 acceptInput()
