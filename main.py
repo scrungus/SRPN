@@ -1,5 +1,13 @@
 import math as m
 
+def addStack(elem):
+    if(len(stack) >= 23):
+        print('Stack Overflow')
+    else:
+        stack.append(elem)
+    return
+
+
 def checkSat(elem):
     if elem > MAX:
         return MAX
@@ -34,6 +42,8 @@ def performOperation(elem):
     if elem == '=':
         print(m.trunc(stack[-1]))
         return
+    if elem == 'r':
+        return
     #write operations
     if(len(stack)>=2):
         y = float(stack.pop())
@@ -64,12 +74,11 @@ def acceptInput():
         line = input('')
         for elem in line.split():
             if(elem.lstrip('-').isdigit()):
-                stack.append(checkSat(int(elem)))
-                
+                addStack(checkSat(int(elem)))                
             else:
                 newelem = performOperation(elem)
                 if newelem is not None:
-                    stack.append(newelem)
+                    addStack(newelem)
     return
 
 validoperations = ['*','/','+','-','^','%','d','r','=']
