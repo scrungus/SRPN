@@ -69,7 +69,6 @@ def performOperation(elem):
 
 def acceptInput():
     while(1):
-        isInfix = 0
         line = input('')
         for elem in line.split():
             if(elem.lstrip('-').isdigit()):
