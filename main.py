@@ -7,7 +7,6 @@ def addStack(elem):
         stack.append(elem)
     return
 
-
 def checkSat(elem):
     if elem > MAX:
         return MAX
@@ -21,20 +20,19 @@ def printStack():
         print(m.trunc(stack[i]))
     return
 
-def findOffender(elem):
+""" def findOffender(elem):
     for i in range(len(elem)):
         if not elem[i].isdigit():
-            return elem[i]
+            return elem[i] """
+
+def parseInfix(elem):
+    print("parsing infix...")
+
 
 def performOperation(elem):
     #invalid operations
     if not elem in validoperations:
-        print('unrecognised operator',findOffender(elem))
-
-        try:
-            return float(elem)
-        except:
-            return
+        return       
     #read-only operations
     if elem == 'd':
         printStack()
@@ -71,14 +69,18 @@ def performOperation(elem):
 
 def acceptInput():
     while(1):
+        isInfix = 0
         line = input('')
         for elem in line.split():
             if(elem.lstrip('-').isdigit()):
                 addStack(checkSat(int(elem)))                
-            else:
+            else:   
                 newelem = performOperation(elem)
                 if newelem is not None:
                     addStack(newelem)
+                else:
+                    if not elem in validoperations: 
+                        parseInfix(elem)
     return
 
 validoperations = ['*','/','+','-','^','%','d','r','=']
