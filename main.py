@@ -1,5 +1,15 @@
 import math as m
 
+RAND = -1
+
+def rand():
+    global RAND
+    randNo = [1804289383,846930886,1681692777,1714636915,1957747793,424238335,719885386,1649760492,596516649,1189641421,1025202362,1350490027,783368690,1102520059,2044897763,1967513926,1365180540,1540383426,3040891721,303455736,35005211,521595368]
+    if (RAND == 21):
+        RAND = 0
+    RAND += 1
+    return randNo[RAND]
+
 def addStack(elem):
     if(len(stack) >= 23):
         print('Stack Overflow')
@@ -41,7 +51,7 @@ def performOperation(elem):
         print(m.trunc(stack[-1]))
         return
     if elem == 'r':
-        return
+        return rand()
     #write operations
     if(len(stack)>=2):
         y = float(stack.pop())
