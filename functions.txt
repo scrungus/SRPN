@@ -39,3 +39,4 @@ d
 1
 1
 
+when input is decmimal point, pop numbers individually on thee stack
