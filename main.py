@@ -28,6 +28,9 @@ def checkSat(elem):
         return elem
 
 def printStack():
+    if len(stack) == 0:
+        print(-MAX)
+        return
     for i in range(len(stack)):
         print(m.trunc(stack[i]))
     return
@@ -52,9 +55,11 @@ def parseInfix(input):
     return
 
 def parseInfix2(input):
-    precedence = ['^','%','/','*','+','-']
     infix = list(input)
-    return
+    postfix = []
+    for i in range(len(infix)):
+        p
+    return postfix
 
 
 def performOperation(elem):
@@ -84,6 +89,8 @@ def performOperation(elem):
             return checkSat(x*y)
         if elem == '/':
             if y == 0:
+                addStack(x)
+                addStack(y)
                 print('divide by 0.')
                 return
             else:
@@ -95,6 +102,11 @@ def performOperation(elem):
         if elem == '%':
             return checkSat(x%y)
         if elem == '^':
+            if y < 0:
+                addStack(x)
+                addStack(y)
+                print('Negative Power.')
+                return
             return checkSat(x**y)
 
 def acceptInput():
@@ -121,7 +133,19 @@ def acceptInput():
     return
 
 validoperations = ['*','/','+','-','^','%','d','r','=']
+
+precedence = {
+'^':0,
+'d':0,
+'%':1,
+'/':2,
+'*':3,
+'+':4,
+'-':5,
+}
+
 stack = []
+
 MAX = 2147483647
 print('You can now begin using the SRPN calculator:')
 acceptInput()
