@@ -33,7 +33,6 @@ def printStack():
     return
 
 def parseInfix(input):
-    parsed = []
     infix = list(input)
     for i in range(len(infix)):
         if infix[i].isdigit() and not commented:
@@ -42,7 +41,7 @@ def parseInfix(input):
                     infix[i] = '-'+infix[i]
                     infix[i-1] = '0'
             addStack(checkSat(int(infix[i])))
-    for i,elem in enumerate(reversed(infix)):
+    for elem in reversed(infix):
         if not elem.lstrip('-').isdigit():
                 newelem = performOperation(elem)
                 if newelem is not None:
@@ -51,7 +50,13 @@ def parseInfix(input):
                     if elem not in validoperations:
                         print('Unrecognized operator or operand ',elem)
     return
-            
+
+def parseInfix2(input):
+    precedence = ['^','%','/','*','+','-']
+    infix = list(input)
+    return
+
+
 def performOperation(elem):
     if not commented:
         #invalid operations
@@ -67,6 +72,7 @@ def performOperation(elem):
         if elem == 'r':
             return rand()
         #write operations
+        #don't pop unless possible
         if(len(stack)>=2):
             y = float(stack.pop())
             x = float(stack.pop())
@@ -94,8 +100,10 @@ def performOperation(elem):
 def acceptInput():
     global commented
     while(1):
+        #accept input
         line = input('')
-        for i,elem in enumerate(line.split()):
+        #split space-separated input into array
+        for elem in line.split():
             if(elem.lstrip('-').isdigit() and not commented):
                 addStack(checkSat(int(elem)))                
             else:
