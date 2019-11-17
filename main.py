@@ -39,19 +39,29 @@ def printStack(): #outputs the whole stack
 def parseInfix(input):
     infix = list(input)
     postfix,operators = ([] for i in range(2))
-    for i in range(len(infix)): #iterate through infix string
-        if infix[i].isdigit() and not commented: #if element is digit, add to postfix
-            postfix.append(infix[i])
+    i = 0 
+    while i < len(infix): #iterate through infix string
+        if (infix[i].isdigit() or infix[i]=='r') and not commented: #if element is digit, add to postfix
+            number = ''
+            while(i<len(infix)):
+                number += infix[i]
+                i+=1
+                if i==len(infix) or not infix[i].isdigit() :
+                    i -=1
+                    postfix.append(number)
+                    break
         elif infix[i] in validoperations:
-            if infix[i] == '-' and (infix[i-1] in validoperations) and i != len(infix)-1: #if element is negative and previous element is an operator and not end of line, replace with unary negative placeholder 'n'
+            if (infix[i] == '-' and ((infix[i-1] in validoperations) and i != len(infix)-1)) or(infix[i] == '-' and i==0)  : #if element is negative and previous element is an operator and not end of line, or if '-' is first element on line, replace with unary negative placeholder 'n'
                 infix[i] = 'n'
             while(not len(operators)==0) and (precedence.get(operators[-1],0) > precedence.get(infix[i],0)):
                 postfix.append(operators.pop())
             operators.append(infix[i])
         else:
             print('Unrecognized operator or operand ',infix[i])
+        i+=1
     while not(len(operators)==0):
         postfix.append(operators.pop())
+    print(postfix)
     process(' '.join(postfix))
     return
 
@@ -82,8 +92,13 @@ def performOperation(elem): #perform postfix operations
             print('Stack Underflow') #if not enough elements to pop, stack underflow
             return
         #write operations
-        if elem == '*':
-            return checkSat(x*y)
+        if elem == '*': #catching OverflowError, which can be thrown if x*y is too big
+            try:
+                return checkSat(x*y)
+            except:
+                if (x>0 and y>0) or (y<0 and x<0):
+                    return MAX
+                return -MAX
         if elem == '/':
             if y == 0: #avoid divide by 0 errors, return values to stack
                 addStack(x)
@@ -104,13 +119,21 @@ def performOperation(elem): #perform postfix operations
                 addStack(y)
                 print('Negative Power.')
                 return
-            return checkSat(x**y)
+            try: #catching OverflowError, which can be thrown if x^y is too big
+                return checkSat(x**y)
+            except:
+                if x<0:
+                    if y%2==0:
+                        return MAX
+                    else:
+                        return -MAX
+                return MAX
 
 def process(line): #process input and add it to stack
     global commented
     #split space-separated input into array
     for elem in line.split():
-        if(elem.replace('-','',1).isdigit() and not commented): #if element is negative/positive integer and not in a comment, add to stack
+        if(elem.isdigit() and not commented): #if element is negative/positive integer and not in a comment, add to stack
             addStack(checkSat(int(elem))) #add to stack and check saturation                
         else:
             #comment handling
@@ -137,8 +160,8 @@ def acceptInput(): #function that enables user input
 validoperations = ['*','/','+','-','^','%','d','r','=','n'] #valid postfix operations
 
 precedence = { #precedence of operations for infix
+'=':6,
 '^':5,
-'d':5,
 'n':5,
 '%':4,
 '/':3,
