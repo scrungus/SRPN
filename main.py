@@ -1,7 +1,7 @@
 import math as m
 
-RAND = -1
-commented = False
+RAND = -1 #random number index
+commented = False #for persistent multi-line comments
 
 def rand(): #return a pseudorandom value
     global RAND
@@ -36,41 +36,39 @@ def printStack(): #outputs the whole stack
         print(m.trunc(stack[i])) #print integer values of stack
     return
 
-def parseInfix(input):
+def parseInfix(input): #attempts to parse infix notation
     infix = list(input)
     postfix,operators = ([] for i in range(2))
     i = 0 
     while i < len(infix): #iterate through infix string
         if (infix[i].isdigit() or infix[i]=='r') and not commented: #if element is digit, add to postfix
             number = ''
-            while(i<len(infix)):
+            while(i<len(infix)): #add digits until coming to end or an operator - for multi-digit numbers
                 number += infix[i]
                 i+=1
                 if i==len(infix) or not infix[i].isdigit() :
                     i -=1
                     postfix.append(number)
                     break
-        elif infix[i] in validoperations:
+        elif infix[i] in validoperations: #if operator is valid
             if (infix[i] == '-' and ((infix[i-1] in validoperations) and i != len(infix)-1)) or(infix[i] == '-' and i==0)  : #if element is negative and previous element is an operator and not end of line, or if '-' is first element on line, replace with unary negative placeholder 'n'
                 infix[i] = 'n'
-            while(not len(operators)==0) and (precedence.get(operators[-1],0) > precedence.get(infix[i],0)):
+            while(not len(operators)==0) and (precedence.get(operators[-1],0) > precedence.get(infix[i],0)): #while operators on stack are higher precedence than current operator, pop these off and add them to the postfix string so they execute first
                 postfix.append(operators.pop())
-            operators.append(infix[i])
-        else:
+            operators.append(infix[i]) #add new operator to stack
+        else: #invalid operator
             print('Unrecognized operator or operand ',infix[i])
         i+=1
-    while not(len(operators)==0):
+    while not(len(operators)==0): #append remaining operators
         postfix.append(operators.pop())
-    print(postfix)
-    process(' '.join(postfix))
+    process(' '.join(postfix)) #process postfix - join converts list back to string which process() can use
     return
-
 
 def performOperation(elem): #perform postfix operations
     if not commented:
         #invalid operations
         if not elem in validoperations:
-            return       
+            return     
         #read-only operations
         if elem == 'd':
             printStack()
@@ -154,7 +152,9 @@ def acceptInput(): #function that enables user input
     while(1):
         #accept input
         line = input('')
-        process(line)
+        if('n' in line):
+            print('Unrecognized operator or operand n' )
+        process(line.replace('n','')) #don't allow user input of special negation character
     return
 
 validoperations = ['*','/','+','-','^','%','d','r','=','n'] #valid postfix operations
@@ -172,6 +172,6 @@ precedence = { #precedence of operations for infix
 
 stack = [] #stack for evaluating postfix
 
-MAX = 2147483647
+MAX = 2147483647 #max int size
 print('You can now begin using the SRPN calculator:')
 acceptInput() #begin accepting input
